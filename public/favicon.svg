@@ -1,0 +1,29 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <defs>
+    <linearGradient id="gs-bg" x1="0" y1="0" x2="1024" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0b1220"/>
+    </linearGradient>
+    <linearGradient id="gs-accent" x1="320" y1="488" x2="704" y2="536" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fbbf24"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1024" height="1024" rx="224" fill="url(#gs-bg)"/>
+
+  <g stroke-linecap="round" fill="none">
+    <line x1="320" y1="200" x2="320" y2="488" stroke="#ffffff" stroke-width="52"/>
+    <line x1="704" y1="536" x2="704" y2="824" stroke="#ffffff" stroke-width="52"/>
+    <path d="M 320 488 C 320 600 408 624 512 624 C 616 624 704 600 704 536"
+          stroke="url(#gs-accent)" stroke-width="52"/>
+  </g>
+
+  <g>
+    <circle cx="320" cy="200" r="76" fill="#ffffff"/>
+    <circle cx="320" cy="200" r="34" fill="#0b1220"/>
+
+    <circle cx="704" cy="824" r="76" fill="url(#gs-accent)"/>
+    <circle cx="704" cy="824" r="34" fill="#0b1220"/>
+  </g>
+</svg>

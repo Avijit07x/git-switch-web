@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ── Design tokens ──────────────────────────────────────────────────
+   Brand palette pulled directly from the app logo:
+     #1e293b → #0b1220   (slate ink, gradient background of the logo)
+     #fbbf24 → #f97316   (amber → orange, the active branch gradient)
+     #ffffff             (the inactive branch dots)
+   Site interprets this as: warm-paper background, cool slate ink, and
+   the same amber→orange wash used sparingly as the accent.
+*/
+:root {
+  --radius: 0.625rem;
+
+  --background: oklch(0.985 0.003 250);            /* very faint cool paper */
+  --foreground: oklch(0.22 0.03 250);              /* slate-800 ink */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.03 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.03 250);
+  --primary: oklch(0.7 0.19 45);                   /* #f97316 orange-500 */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.96 0.005 250);
+  --secondary-foreground: oklch(0.26 0.03 250);
+  --muted: oklch(0.965 0.005 250);
+  --muted-foreground: oklch(0.5 0.02 250);
+  --accent: oklch(0.96 0.02 80);
+  --accent-foreground: oklch(0.26 0.03 250);
+  --destructive: oklch(0.65 0.22 25);
+  --border: oklch(0.22 0.03 250 / 0.08);
+  --input: oklch(0.22 0.03 250 / 0.10);
+  --ring: oklch(0.7 0.19 45 / 0.4);
+
+  /* Editorial / brand extras */
+  --hairline: oklch(0.22 0.03 250 / 0.06);
+  --ink-strong: oklch(0.16 0.03 250);              /* #0b1220 deepest slate */
+  --ink-soft: oklch(0.42 0.03 250);
+  --orange-soft: oklch(0.7 0.19 45 / 0.10);
+  --amber: oklch(0.83 0.16 85);                    /* #fbbf24 amber-400 */
+  --amber-soft: oklch(0.83 0.16 85 / 0.14);
+  /* Linear amber→orange gradient used for accent washes + buttons */
+  --brand-gradient: linear-gradient(
+    135deg,
+    oklch(0.83 0.16 85) 0%,
+    oklch(0.7 0.19 45) 100%
+  );
+}
+
+.dark {
+  --background: oklch(0.16 0.03 250);              /* matches logo bg */
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.2 0.03 250);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: oklch(0.2 0.03 250);
+  --popover-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.76 0.18 50);
+  --primary-foreground: oklch(0.16 0.03 250);
+  --secondary: oklch(0.26 0.03 250);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.26 0.03 250);
+  --muted-foreground: oklch(0.72 0.02 250);
+  --accent: oklch(0.26 0.03 250);
+  --accent-foreground: oklch(0.98 0 0);
+  --destructive: oklch(0.7 0.2 22);
+  --border: oklch(1 0 0 / 0.10);
+  --input: oklch(1 0 0 / 0.14);
+  --ring: oklch(0.76 0.18 50 / 0.4);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans:
+    "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
+    sans-serif;
+  --font-serif:
+    "Instrument Serif", "Times New Roman", ui-serif, Georgia, serif;
+  --font-mono:
+    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Monaco, monospace;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after,
+  ::backdrop {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    color-scheme: light;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv02", "cv11";
+  }
+
+  ::selection {
+    background: oklch(0.7 0.19 45 / 0.22);
+  }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.22 0.03 250 / 0.12);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.22 0.03 250 / 0.22);
+  }
+}
+
+@layer utilities {
+  .font-serif { font-family: var(--font-serif); }
+  .font-mono { font-family: var(--font-mono); }
+
+  .border-hairline { border-color: var(--hairline); }
+
+  .hr-ink {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--ink-soft),
+      transparent
+    );
+    opacity: 0.2;
+  }
+
+  .paper-grain {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      oklch(0.22 0.03 250 / 0.04) 1px,
+      transparent 0
+    );
+    background-size: 18px 18px;
+  }
+
+  /* Amber → orange wash. Used for the headline halo and the primary
+     button gradient so the brand gradient from the logo carries through. */
+  .bg-brand-gradient {
+    background: var(--brand-gradient);
+  }
+
+  .text-brand-gradient {
+    background: var(--brand-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
