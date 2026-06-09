@@ -46,10 +46,11 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     images: [
       {
-        url: "/opengraph-image",
+        url: "/og.jpg",
         width: 1200,
         height: 630,
         alt: `${siteConfig.name} · ${siteConfig.tagline}`,
+        type: "image/jpeg",
       },
     ],
   },
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
     title: `${siteConfig.name} · ${siteConfig.tagline}`,
     description: siteConfig.description,
     creator: siteConfig.twitter,
-    images: ["/opengraph-image"],
+    images: ["/og.jpg"],
   },
   icons: {
     icon: "/favicon.svg",

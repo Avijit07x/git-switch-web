@@ -18,6 +18,15 @@ function detectPlatform(): Platform | null {
   if (typeof navigator === "undefined") return null;
   const ua = navigator.userAgent.toLowerCase();
   const platform = (navigator.platform ?? "").toLowerCase();
+
+  // Git Switch is desktop-only. Bail on mobile so the button falls back to
+  // the releases page instead of suggesting a desktop binary.
+  // Android UAs contain "Linux" (Android runs on the Linux kernel) and
+  // iPadOS 13+ masquerades as Macintosh — handle both before OS matching.
+  if (/android|iphone|ipod|mobile/.test(ua)) return null;
+  if (ua.includes("ipad")) return null;
+  if (platform.includes("mac") && navigator.maxTouchPoints > 1) return null;
+
   if (ua.includes("mac") || platform.includes("mac")) return "mac";
   if (ua.includes("win") || platform.includes("win")) return "windows";
   if (ua.includes("linux") || platform.includes("linux")) return "linux";
