@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "motion/react";
 import {
   ArrowDownToLine,
   ArrowUpFromLine,
@@ -9,10 +10,47 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-// Single-responsibility: editorial proof section. A workflow strip showing
-// the four-step loop, a numbers row, and a serif pull-quote. Restrained,
-// type-driven, no decorative graphics.
+import { cn } from "@/lib/utils";
+
+// Editorial proof section: animated workflow loop, stats row, pull-quote.
+const STEPS: Array<{ label: string; sub: string; icon: LucideIcon }> = [
+  {
+    label: "Stage",
+    sub: "Optimistic UI flips the list before git even returns.",
+    icon: Plus,
+  },
+  {
+    label: "Commit",
+    sub: "⌘/Ctrl + Return. Or generate a message with one click.",
+    icon: GitCommitHorizontal,
+  },
+  {
+    label: "Push",
+    sub: "Async backend, never freezes the UI mid-network.",
+    icon: ArrowUpFromLine,
+  },
+  {
+    label: "Pull",
+    sub: "Auto-refresh on focus, FS watcher keeps state honest.",
+    icon: ArrowDownToLine,
+  },
+];
+
+const DWELL_MS = 2400;
+
 export function Preview() {
+  const stripRef = useRef<HTMLOListElement>(null);
+  const inView = useInView(stripRef, { amount: 0.4 });
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    const id = setInterval(() => {
+      setActive((a) => (a + 1) % STEPS.length);
+    }, DWELL_MS);
+    return () => clearInterval(id);
+  }, [inView]);
+
   return (
     <section
       id="preview"
@@ -30,35 +68,23 @@ export function Preview() {
           </span>
         </h2>
 
-        {/* Workflow steps */}
-        <ol className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--border)] md:grid-cols-4">
-          <Step
-            n="01"
-            label="Stage"
-            sub="Optimistic UI flips the list before git even returns."
-            icon={Plus}
-          />
-          <Step
-            n="02"
-            label="Commit"
-            sub={"⌘/Ctrl + Return. Or generate a message with one click."}
-            icon={GitCommitHorizontal}
-          />
-          <Step
-            n="03"
-            label="Push"
-            sub="Async backend, never freezes the UI mid-network."
-            icon={ArrowUpFromLine}
-          />
-          <Step
-            n="04"
-            label="Pull"
-            sub="Auto-refresh on focus, FS watcher keeps state honest."
-            icon={ArrowDownToLine}
-          />
+        <ol
+          ref={stripRef}
+          className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-[color:var(--border)] bg-[color:var(--border)] md:grid-cols-4"
+        >
+          {STEPS.map((step, i) => (
+            <Step
+              key={step.label}
+              n={`0${i + 1}`}
+              label={step.label}
+              sub={step.sub}
+              icon={step.icon}
+              index={i}
+              active={active === i}
+            />
+          ))}
         </ol>
 
-        {/* Numbers strip */}
         <div className="mt-20 grid grid-cols-2 gap-y-12 md:grid-cols-4 md:gap-x-8">
           <Stat number="0ms" label="UI block during fetch, pull, or push" />
           <Stat number="1×" label="IPC call for the entire sidebar refresh" />
@@ -96,27 +122,76 @@ function Step({
   label,
   sub,
   icon: Icon,
+  index,
+  active,
 }: {
   n: string;
   label: string;
   sub: string;
   icon: LucideIcon;
+  index: number;
+  active: boolean;
 }) {
   return (
-    <li className="bg-[color:var(--card)] p-7">
+    <motion.li
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.5, delay: index * 0.08 }}
+      className={cn(
+        "relative bg-[color:var(--card)] p-7 transition-colors duration-500",
+        active && "bg-[oklch(0.99_0.018_72)]",
+      )}
+    >
       <div className="flex items-center gap-3">
-        <span className="font-mono text-[11px] tracking-wider text-[color:var(--muted-foreground)]">
+        <span
+          className={cn(
+            "font-mono text-[11px] tracking-wider transition-colors duration-500",
+            active
+              ? "text-[color:var(--foreground)]"
+              : "text-[color:var(--muted-foreground)]",
+          )}
+        >
           {n}
         </span>
-        <span className="inline-flex size-7 items-center justify-center rounded-md bg-[color:var(--orange-soft)] text-[color:var(--primary)]">
+        <motion.span
+          animate={active ? { scale: [1, 1.12, 1] } : { scale: 1 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
+          className={cn(
+            "inline-flex size-7 items-center justify-center rounded-md transition-[background-color,color,box-shadow] duration-500",
+            active
+              ? "bg-[color:var(--primary)] text-white shadow-[0_4px_14px_oklch(0.7_0.19_45/0.4)]"
+              : "bg-[color:var(--orange-soft)] text-[color:var(--primary)]",
+          )}
+        >
           <Icon className="size-3.5" />
-        </span>
+        </motion.span>
       </div>
-      <p className="mt-4 text-[18px] font-medium tracking-tight">{label}</p>
+      <p
+        className={cn(
+          "mt-4 text-[18px] font-medium tracking-tight transition-colors duration-500",
+          active
+            ? "text-[color:var(--foreground)]"
+            : "text-[color:var(--foreground)]",
+        )}
+      >
+        {label}
+      </p>
       <p className="mt-1.5 text-[13px] leading-relaxed text-[color:var(--ink-soft)]">
         {sub}
       </p>
-    </li>
+
+      {active ? (
+        <motion.div
+          key={`progress-${index}`}
+          aria-hidden
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: DWELL_MS / 1000, ease: "linear" }}
+          className="absolute inset-x-0 bottom-0 h-[2px] origin-left bg-[color:var(--primary)]"
+        />
+      ) : null}
+    </motion.li>
   );
 }
 
