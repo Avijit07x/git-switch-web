@@ -20,7 +20,7 @@ export function Hero({
   links: DownloadLinks;
 }) {
   return (
-    <section className="relative isolate overflow-hidden pb-20 pt-32 md:pb-28 md:pt-40">
+    <section className="relative isolate flex min-h-dvh flex-col justify-center overflow-hidden pb-16 pt-24 md:pb-20 md:pt-32 min-[1200px]:block min-[1200px]:min-h-0 min-[1200px]:pb-28 min-[1200px]:pt-40">
       <div className="paper-grain pointer-events-none absolute inset-0 -z-10 opacity-60" />
 
       <div

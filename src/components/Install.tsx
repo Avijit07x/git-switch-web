@@ -30,7 +30,7 @@ export function Install({
         <div className="pointer-events-none absolute -right-32 -top-32 size-80 rounded-full bg-[color:var(--orange-soft)] blur-3xl" />
 
         <div className="relative grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-end">
-          <div>
+          <div className="min-w-0">
             <p className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.18em] text-[color:var(--primary)]">
               <span className="block size-1 rounded-full bg-current" />
               Install
@@ -90,7 +90,7 @@ function CloneBlock() {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="min-w-0 space-y-3">
       <p className="font-mono text-[11px] uppercase tracking-[0.15em] text-[color:var(--ink-soft)]">
         Or via terminal
       </p>
@@ -98,7 +98,7 @@ function CloneBlock() {
         onClick={handleCopy}
         className="group flex w-full items-center gap-3 rounded-lg border border-[color:var(--border)] bg-white p-4 text-left transition-colors hover:bg-[oklch(0.985_0.005_70)]"
       >
-        <span className="flex-1 truncate font-mono text-[12px] text-[color:var(--foreground)]">
+        <span className="min-w-0 flex-1 truncate font-mono text-[12px] text-[color:var(--foreground)]">
           <span className="select-none text-[color:var(--primary)]">$ </span>
           {cmd}
         </span>

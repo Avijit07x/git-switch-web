@@ -7,7 +7,7 @@ import { siteConfig } from "@/lib/utils";
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} · ${siteConfig.tagline}`,
+    default: `${siteConfig.name} | ${siteConfig.headline}`,
     template: `%s · ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -41,25 +41,25 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteConfig.url,
-    title: `${siteConfig.name} · ${siteConfig.tagline}`,
+    title: `${siteConfig.name} | ${siteConfig.headline}`,
     description: siteConfig.description,
     siteName: siteConfig.name,
     images: [
       {
-        url: "/og.jpg",
+        url: "/og.png",
         width: 1200,
         height: 630,
-        alt: `${siteConfig.name} · ${siteConfig.tagline}`,
-        type: "image/jpeg",
+        alt: `${siteConfig.name} | ${siteConfig.headline}`,
+        type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.name} · ${siteConfig.tagline}`,
+    title: `${siteConfig.name} | ${siteConfig.headline}`,
     description: siteConfig.description,
     creator: siteConfig.twitter,
-    images: ["/og.jpg"],
+    images: ["/og.png"],
   },
   icons: {
     icon: "/favicon.svg",
